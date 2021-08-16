@@ -15,40 +15,42 @@ using System.Threading;
 → https://www.youtube.com/watch?v=cH-QQoNNpaI
 
 */
-
-[CreateAssetMenu(menuName = "Serial/SerialManager")]
-public class ScriptableSerialManager : ScriptableSingleton<ScriptableSerialManager>
+namespace ƒx.UnityUtils.Serial
 {
-    Thread readThread = new Thread(Read);
-    static SerialPort _serialPort = new SerialPort();
-    static bool _continue;
-    public string portName;
-
-    public static void Read()
+    [CreateAssetMenu(menuName = "Serial/SerialManager")]
+    public class ScriptableSerialManager : ScriptableSingleton<ScriptableSerialManager>
     {
-        while (_continue)
+        Thread readThread = new Thread(Read);
+        static SerialPort _serialPort = new SerialPort();
+        static bool _continue;
+        public string portName;
+
+        public static void Read()
         {
-            try
+            while (_continue)
             {
-                string message = _serialPort.ReadLine();
-                Debug.Log(message);
+                try
+                {
+                    string message = _serialPort.ReadLine();
+                    Debug.Log(message);
+                }
+                catch (TimeoutException) { }
             }
-            catch (TimeoutException) { }
         }
+
+        public void Log()
+        {
+            Debug.Log("Serial Manager: " + JsonUtility.ToJson(this, true));
+        }
+
     }
 
-    public void Log()
+    static class SerialMenu
     {
-        Debug.Log("Serial Manager: " + JsonUtility.ToJson(this, true));
-    }
-
-}
-
-static class MySingletonMenuItems
-{
-    [MenuItem("Serial/Log")]
-    static void LogMySingletonState()
-    {
-        ScriptableSerial.instance.Log();
+        [MenuItem("Serial/Log")]
+        static void LogMySingletonState()
+        {
+            ScriptableSerial.instance.Log();
+        }
     }
 }
