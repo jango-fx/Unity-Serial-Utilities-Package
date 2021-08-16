@@ -15,6 +15,7 @@ using System.Threading;
 → https://www.youtube.com/watch?v=cH-QQoNNpaI
 
 */
+
 namespace ƒx.UnityUtils.Serial
 {
     [CreateAssetMenu(menuName = "Serial/SerialManager")]
