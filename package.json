@@ -1,17 +1,22 @@
 {
-    "name": "io.github.jango-fx.unityutils.serial",
-    "version": "0.0.1",
-    "displayName": "Unity Utilities Serial Package",
-    "description": "Collections of Serial Utilities and Convenience Scripts ",
-    "unity": "2019.1",
-    "dependencies": {},
-    "keywords": [
-      "Editor",
-      "Utilities",
-      "Convenience"
-    ],
-    "author": {
-      "name": "Felix Groll",
-      "url": "https://jango-fx.github.io"
-    }
+  "name": "io.github.jango-fx.unityutils.serial",
+  "version": "2.0.0",
+  "displayName": "Unity Utilities Serial Package",
+  "description": "Collections of Serial Utilities and Convenience Scripts",
+  "unity": "2019.1",
+  "dependencies": {
+    "io.github.jango-fx.unityutils.editor": "2.0.0"
+  },
+  "keywords": [
+    "Editor",
+    "Utilities",
+    "Convenience",
+    "Serial",
+    "Arduino",
+    "Firmata"
+  ],
+  "author": {
+    "name": "Felix Groll",
+    "url": "https://jango-fx.github.io"
   }
+}

@@ -1,12 +1,15 @@
 {
     "name": "ƒx.UnityUtils.Serial",
-    "references": [],
-    "optionalUnityReferences": [],
+    "references": [
+        "ƒx.UnityUtils.Editor"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

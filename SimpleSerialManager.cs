@@ -1,0 +1,168 @@
+/*
+References:
+→ https://github.com/dwilches/Ardity
+→ https://www.alanzucconi.com/2016/12/01/asynchronous-serial-communication/
+
+→ https://docs.microsoft.com/de-de/dotnet/api/system.io.ports?view=dotnet-plat-ext-5.0
+→ https://docs.unity3d.com/2020.1/Documentation/ScriptReference/ScriptableSingleton_1.html
+→ https://baraujo.net/unity3d-making-singletons-from-scriptableobjects-automatically/
+→ https://www.youtube.com/watch?v=6kWUGEQiMUI
+→ https://www.youtube.com/watch?v=cH-QQoNNpaI
+
+*/
+
+
+using System;
+using System.IO;
+using System.IO.Ports;
+using System.Threading;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using ƒx.UnityUtils.Editor;
+
+
+namespace ƒx.UnityUtils.Serial
+{
+    [CreateAssetMenu(menuName = "Serial/SimpleSerialManager")]
+    public class SimpleSerialManager : ScriptableSingleton<SimpleSerialManager>
+    {
+        Thread thread = new Thread(SerialReadLoop);
+        public static SerialPort port;
+        static bool isRunning;
+        public string portName;
+        public int baudRate = 9600;
+
+        public List<string> portsList = new List<string>();
+        public List<string> portNames = new List<string>();
+
+        public delegate void SerialMessageHandler(string msg);
+        public SerialMessageHandler serialMessageHandler;
+
+        public QuickButton start = new QuickButton("Start");
+        public void Start()
+        {
+            isRunning = true;
+            if (port == null || !port.IsOpen)
+                port = CreatePort();
+
+            thread = new Thread(SerialReadLoop);
+            thread.Start();
+        }
+
+        public QuickButton stop = new QuickButton("Stop");
+        public void Stop()
+        {
+            HaltThread();
+            thread.Abort();
+            ClosePort();
+        }
+
+        public SerialPort CreatePort()
+        {
+            Debug.Log("[SERIAL MANAGER]: opening port");
+            SerialPort _port = new SerialPort(portName, baudRate);
+            _port.Parity = Parity.None;
+            _port.StopBits = StopBits.One;
+            _port.DataBits = 8;
+            _port.Handshake = Handshake.None;//Handshake.RequestToSendXOnXOff;//Handshake.XOnXOff;//Handshake.RequestToSend;
+            _port.DtrEnable = true;
+            _port.RtsEnable = true;
+            _port.ReadTimeout = 50;
+            _port.Open();
+
+            return _port;
+        }
+
+        public void ClosePort()
+        {
+            if (port != null)
+            {
+                port.Close();
+                Debug.Log("[SERIAL MANAGER]: closing port");
+            }
+            else Debug.Log("[SERIAL MANAGER]: no port open");
+
+        }
+
+        public void HaltThread()
+        {
+            lock (this)
+            {
+                isRunning = false;
+            }
+        }
+
+        public bool IsRunning()
+        {
+            lock (this)
+            {
+                return isRunning;
+            }
+        }
+
+        static void SerialReadLoop()
+        {
+            while (SimpleSerialManager.instance.IsRunning())
+            {
+                try
+                {
+                    string message = port.ReadLine();
+                    if (SimpleSerialManager.instance.serialMessageHandler != null)
+                    {
+                        SimpleSerialManager.instance.serialMessageHandler(message);
+                    }
+                    Debug.Log("[SERIAL MANAGER]: received message\n" + message);
+                }
+                catch (TimeoutException) { }
+            }
+        }
+
+        public void SendToSerial(string message)
+        {
+            port.WriteLine(message);
+            port.BaseStream.Flush();
+        }
+
+        public QuickButton UpdateThePortList = new QuickButton("UpdatePortList");
+        void UpdatePortList()
+        {
+            portsList = new List<string>(System.IO.Ports.SerialPort.GetPortNames());
+            portNames = new List<string>(portsList);
+
+            for (int i = portNames.Count - 1; i >= 0; i--)
+            {
+                if (!portNames[i].StartsWith("/dev/tty."))
+                {
+                    //Debug.Log("forget " + ports[i]);
+                    portsList.RemoveAt(i);
+                    portNames.RemoveAt(i);
+                }
+                else
+                {
+                    string[] split = portNames[i].Split('/');
+                    split = split[split.Length - 1].Split('.');
+                    portNames[i] = "[" + i + "]: " + split[split.Length - 1];
+                }
+            }
+
+            Debug.Log(GetPortNames());
+        }
+
+        string GetPortNames()
+        {
+            string msg = "Found " + portsList.Count + " ports.";
+            for (int i = 0; i < portsList.Count; i++)
+            {
+                msg += "\n\t" + portNames[i];
+            }
+            return msg;
+        }
+
+        public void Log()
+        {
+            Debug.Log("[SERIAL MANAGER]: " + JsonUtility.ToJson(this, true));
+        }
+
+    }
+}
