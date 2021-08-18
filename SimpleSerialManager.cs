@@ -29,17 +29,13 @@ namespace ƒx.UnityUtils.Serial
     {
         Thread thread = new Thread(SerialReadLoop);
         public static SerialPort port;
-        static bool isRunning;
-        public string portName;
-        public int baudRate = 9600;
-
-        public List<string> portsList = new List<string>();
-        public List<string> portNames = new List<string>();
+        [ReadOnly] public static bool isRunning;
+        [HideInInspector] public string portName;
+        [HideInInspector] public int baudRate = 9600;
 
         public delegate void SerialMessageHandler(string msg);
         public SerialMessageHandler serialMessageHandler;
 
-        public QuickButton start = new QuickButton("Start");
         public void Start()
         {
             isRunning = true;
@@ -50,7 +46,6 @@ namespace ƒx.UnityUtils.Serial
             thread.Start();
         }
 
-        public QuickButton stop = new QuickButton("Stop");
         public void Stop()
         {
             HaltThread();
@@ -122,47 +117,34 @@ namespace ƒx.UnityUtils.Serial
         {
             port.WriteLine(message);
             port.BaseStream.Flush();
+            Debug.Log("[SERIAL MANAGER]: sent message\n" + message);
         }
 
-        public QuickButton UpdateThePortList = new QuickButton("UpdatePortList");
-        void UpdatePortList()
+        // public void Log()
+        // {
+        //     Debug.Log("[SERIAL MANAGER]: " + JsonUtility.ToJson(this, true));
+        // }
+
+    }
+
+    static class SimpleSerialManagerMenuItems
+    {
+        [MenuItem("Serial/Start")]
+        static void StartSimpleSerialManager()
         {
-            portsList = new List<string>(System.IO.Ports.SerialPort.GetPortNames());
-            portNames = new List<string>(portsList);
-
-            for (int i = portNames.Count - 1; i >= 0; i--)
-            {
-                if (!portNames[i].StartsWith("/dev/tty."))
-                {
-                    //Debug.Log("forget " + ports[i]);
-                    portsList.RemoveAt(i);
-                    portNames.RemoveAt(i);
-                }
-                else
-                {
-                    string[] split = portNames[i].Split('/');
-                    split = split[split.Length - 1].Split('.');
-                    portNames[i] = "[" + i + "]: " + split[split.Length - 1];
-                }
-            }
-
-            Debug.Log(GetPortNames());
+            SimpleSerialManager.instance.Start();
         }
 
-        string GetPortNames()
+        [MenuItem("Serial/Stop")]
+        static void StopSimpleSerialManager()
         {
-            string msg = "Found " + portsList.Count + " ports.";
-            for (int i = 0; i < portsList.Count; i++)
-            {
-                msg += "\n\t" + portNames[i];
-            }
-            return msg;
+            SimpleSerialManager.instance.Stop();
         }
 
-        public void Log()
+        [MenuItem("Serial/Show")]
+        static void SelectSimpleSerialManager()
         {
-            Debug.Log("[SERIAL MANAGER]: " + JsonUtility.ToJson(this, true));
+            Selection.activeObject = AssetDatabase.LoadAssetAtPath<SimpleSerialManager>(AssetDatabase.GetAssetPath(SimpleSerialManager.instance));
         }
-
     }
 }

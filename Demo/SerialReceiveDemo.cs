@@ -2,16 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ƒx.UnityUtils.Serial;
+using ƒx.UnityUtils.Editor;
 
 public class SerialReceiveDemo : MonoBehaviour
 {
-    public SimpleSerialManager serialManager;
-    public int messageCount = 0;
-    public string lastMessage = "";
+    [ReadOnly] public SimpleSerialManager serialManager;
+    [ReadOnly] public int messageCount = 0;
+    [ReadOnly] public string lastMessage = "";
 
-    void Start()
+    void Reset()
     {
-        serialManager.serialMessageHandler += messageHandler;
+        SimpleSerialManager.instance.serialMessageHandler -= messageHandler;
+        SimpleSerialManager.instance.serialMessageHandler += messageHandler;
+    }
+
+    void Awake()
+    {
+        serialManager = SimpleSerialManager.instance;
+        SimpleSerialManager.instance.serialMessageHandler -= messageHandler;
+        SimpleSerialManager.instance.serialMessageHandler += messageHandler;
+        SimpleSerialManager.instance.Start();
+    }
+
+    void OnDestroy()
+    {
+        SimpleSerialManager.instance.Stop();
     }
 
     void messageHandler(string msg)
@@ -23,12 +38,12 @@ public class SerialReceiveDemo : MonoBehaviour
     [ContextMenu("Start Serial Manager")]
     void StartSerialManager()
     {
-        serialManager.Start();
+        SimpleSerialManager.instance.Start();
     }
 
     [ContextMenu("Stop Serial Manager")]
     void StopSerialManager()
     {
-        serialManager.Stop();
+        SimpleSerialManager.instance.Stop();
     }
 }
