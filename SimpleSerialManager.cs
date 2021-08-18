@@ -18,8 +18,10 @@ using System.IO.Ports;
 using System.Threading;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEditor;
 using ƒx.UnityUtils.Editor;
+// using ƒx.UnityUtils.ScriptableObjects;
 
 
 namespace ƒx.UnityUtils.Serial
@@ -35,6 +37,8 @@ namespace ƒx.UnityUtils.Serial
 
         public delegate void SerialMessageHandler(string msg);
         public SerialMessageHandler serialMessageHandler;
+
+        [HideInInspector] public SerialMessageEvent onMessageReceive; // TODO: make work with ScriptableObject-GameEvents?
 
         public void Start()
         {
@@ -106,6 +110,7 @@ namespace ƒx.UnityUtils.Serial
                     if (SimpleSerialManager.instance.serialMessageHandler != null)
                     {
                         SimpleSerialManager.instance.serialMessageHandler(message);
+                        SimpleSerialManager.instance.onMessageReceive.Invoke(message);
                     }
                     Debug.Log("[SERIAL MANAGER]: received message\n" + message);
                 }
@@ -147,4 +152,6 @@ namespace ƒx.UnityUtils.Serial
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<SimpleSerialManager>(AssetDatabase.GetAssetPath(SimpleSerialManager.instance));
         }
     }
+
+    [Serializable] public class SerialMessageEvent : UnityEvent<string> { }
 }

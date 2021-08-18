@@ -54,11 +54,17 @@ namespace ƒx.UnityUtils.Serial
             GUIContent portSelection = new GUIContent("Select Serial Port: ");
             portID = EditorGUILayout.Popup(portSelection, portID, portNames.ToArray());
             theScript.portName = portsList[portID];
-
-            EditorGUILayout.DelayedIntField(SimpleSerialManager.instance.baudRate);
+            GUIContent baudRateField = new GUIContent("Baud rate: ");
+            EditorGUILayout.DelayedIntField(baudRateField, SimpleSerialManager.instance.baudRate);
 
             if (GUILayout.Button("Start Serial")) { SimpleSerialManager.instance.Start(); }
             if (GUILayout.Button("Stop Serial")) { SimpleSerialManager.instance.Stop(); }
+
+            SerializedObject serObj = new SerializedObject(SimpleSerialManager.instance);
+            SerializedProperty sprop = serializedObject.FindProperty("onMessageReceive");
+            EditorGUIUtility.LookLikeControls();
+            EditorGUILayout.PropertyField(sprop);
+            serializedObject.ApplyModifiedProperties();
 
             //? add SerialMonitor?
             // monitorScroll = EditorGUILayout.BeginScrollView(monitorScroll);
