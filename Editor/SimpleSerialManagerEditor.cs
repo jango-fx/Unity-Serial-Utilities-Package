@@ -14,8 +14,8 @@ namespace ƒx.UnityUtils.Serial
         List<string> portsList = new List<string>();
         List<string> portNames = new List<string>();
         int portID;
-        Vector2 monitorScroll = new Vector2();
-        string monitorLog = "";
+        // Vector2 monitorScroll = new Vector2();
+        // string monitorLog = "";
 
         void Awake()
         {
@@ -62,7 +62,7 @@ namespace ƒx.UnityUtils.Serial
 
             SerializedObject serObj = new SerializedObject(SimpleSerialManager.instance);
             SerializedProperty sprop = serializedObject.FindProperty("onMessageReceive");
-            EditorGUIUtility.LookLikeControls();
+            // EditorGUIUtility.LookLikeControls();
             EditorGUILayout.PropertyField(sprop);
             serializedObject.ApplyModifiedProperties();
 
