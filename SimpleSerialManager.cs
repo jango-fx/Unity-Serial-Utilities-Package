@@ -146,10 +146,16 @@ namespace ƒx.UnityUtils.Serial
             SimpleSerialManager.instance.Stop();
         }
 
-        [MenuItem("Serial/Show")]
+        [MenuItem("Serial/Show SimpleSerialManager in Assets")]
         static void SelectSimpleSerialManager()
         {
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<SimpleSerialManager>(AssetDatabase.GetAssetPath(SimpleSerialManager.instance));
+        }
+
+        [MenuItem("Serial/Create SimpleSerialManager")]
+        public static void CreateAsset()
+        {
+            ƒx.UnityUtils.ScriptableObjects.ScriptableObjectUtility.CreateAsset<SimpleSerialManager>("New SimpleSerialManager");
         }
     }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using ƒx.UnityUtils.Serial;
+using ƒx.UnityUtils;
 
 namespace ƒx.UnityUtils.Serial
 {
@@ -34,12 +35,14 @@ namespace ƒx.UnityUtils.Serial
 
         void SetPort(string portName)
         {
-
-            int index = portsList.FindIndex(s => s.Contains(portName));
-            if (index >= 0)
-                portID = index;
-            else
-                Debug.Log("[SERIAL]: ›" + theScript.portName + "‹ not found");
+            if (portName != null)
+            {
+                int index = portsList.FindIndex(s => s.Contains(portName));
+                if (index >= 0)
+                    portID = index;
+                else
+                    Debug.Log("[SERIAL]: ›" + theScript.portName + "‹ not found");
+            }
         }
 
         void OnDestroy() { theScript.portName = portsList[portID]; }
@@ -110,11 +113,9 @@ namespace ƒx.UnityUtils.Serial
 
         string GetPortNames()
         {
-            string msg = "Found " + portsList.Count + " ports.";
-            for (int i = 0; i < portsList.Count; i++)
-            {
-                msg += "\n\t" + portNames[i];
-            }
+            string msg = "[SERIAL]: Found " + portsList.Count + " ports.";
+            msg += portsList.ToArrayString();
+ 
             return msg;
         }
     }

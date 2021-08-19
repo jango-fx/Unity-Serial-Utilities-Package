@@ -1,7 +1,9 @@
 {
     "name": "ƒx.UnityUtils.Serial",
     "references": [
-        "ƒx.UnityUtils.Editor"
+        "ƒx.UnityUtils.Editor",
+        "ƒx.UnityUtils.ScriptableObjects",
+        "ƒx.UnityUtils"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
