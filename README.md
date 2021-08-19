@@ -20,6 +20,8 @@ creativecommons share-alike
 5. [Webcam](#webcam)
 6. [Serial Utilities](#-serial-utilities)
 7. 🚧 *[OSC Utilities](#-osc-utilities)*
+8. 🚧 *[MIDI Utilities](#-midi-utilities)*
+9. 🚧 *XR Utilities*
 
 ## Core Utilities
 GIT Repository: https://github.com/jango-fx/Unity-Utilities-Package.git  
@@ -32,7 +34,7 @@ Content:
 - [ ] _SelectPlayView_
 - [ ] _Screenshots / Screencasts_
 - Extensions
-  - [x] List.ToArrayString
+  - [x] List<T>.ToArrayString
 
 
 ## Editor Utilities
@@ -57,7 +59,7 @@ add project manifest entry: `"io.github.jango-fx.unity.scriptableobjects": "http
 import namespace: `using ƒx.UnityUtils.ScriptableObjects`
 
 Content:
-- [x] Events
+- [x] GameEvents
 - [x] FloatVariable
 - [x] FloatReference
 - [x] StringVariable
@@ -109,3 +111,16 @@ Content
 - [ ] OSC Sender
 - [ ] OSC Receiver
 - [ ] OSC Monitor
+
+
+## 🚧 *MIDI Utilities*
+➝ _kejiro:_
+
+> https://github.com/keijiro/jp.keijiro.rtmidi  
+  https://github.com/keijiro/unity-midi-bridge  
+  https://github.com/keijiro/unity-midi-receiver  
+  https://github.com/keijiro/MidiAnimationTrack  
+  https://github.com/keijiro/MidiJack  
+  https://github.com/keijiro/Minis  
+
+ - [ ] missing MIDI output
