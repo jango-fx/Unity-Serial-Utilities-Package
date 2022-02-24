@@ -13,15 +13,15 @@ should i have missed something: i'm sorry and happy to add credit where credit i
 creativecommons share-alike
 
 ### content:
-1. [Core Utilities](#Core-Utilities)
-2. [Editor Utilities](#Editor-Utilities)
-3. [Scriptable Objects](#Scriptable-Objects)
+1. [Core Utilities](#core-utilities)
+2. [Editor Utilities](#editor-utilities)
+3. [Scriptable Objects](#scriptable-objects)
 4. [Timeline Utilities](#timeline-utilities)
 5. [Webcam](#webcam)
-6. [Serial Utilities](#-serial-utilities)
-7. 🚧 *[OSC Utilities](#-osc-utilities)*
-8. 🚧 *[MIDI Utilities](#-midi-utilities)*
-9. 🚧 *XR Utilities*
+6.  [Serial Utilities](#serial-utilities)
+7.  🚧 *[OSC Utilities](#osc-utilities)*
+8.  🚧 *[MIDI Utilities](#midi-utilities)*
+9.  🚧 *XR Utilities*
 
 ## Core Utilities
 GIT Repository: https://github.com/jango-fx/Unity-Utilities-Package.git  
@@ -94,7 +94,10 @@ GIT Repository: https://github.com/jango-fx/Unity-Serial-Utilities-Package
 add project manifest entry: `"io.github.jango-fx.unityutils.serial": "https://github.com/jango-fx/Unity-Serial-Utilities-Package.git"`  
 import namespace: `using ƒx.UnityUtils.Serial`
 
-Content
+#### Dependencies:
+- API Compatibility Level: .NET 4.x
+
+#### Content
 - [x] Serial Manager
 - [ ] Serial Monitor
 
